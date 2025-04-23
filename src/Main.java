@@ -4,7 +4,144 @@ public class Main {
 
     public static Scanner input = new Scanner(System.in);
 
+    public static String[][] books = new String[100][5];
+
+    public static int bookCount = 0;
+
+    public static String[] inputFields = {"Title", "Author", "Genre", "Quantity"};
+
     public static void manageBooks() {
+
+        boolean exit = false;
+
+        while (!exit) {
+            String[] bookOptions = {"Add Book", "Update Book", "Delete Book", "View Books", "Search Books", "Go to Homepage"};
+
+            for (int i = 0; i < 6; i++) {
+
+                System.out.println(" " + (i + 1) + ". " + bookOptions[i]);
+
+            }
+
+            System.out.print("Choose option: ");
+            int option = input.nextInt();
+
+            switch (option) {
+                case 1:
+                    addBook();
+                    break;
+                case 2:
+                    updateBook();
+                    break;
+                case 3:
+                    deleteBook();
+                    break;
+                case 4:
+                    viewBooks();
+                    break;
+                case 5:
+                    searchBook();
+                    break;
+                case 6:
+                    exit = true;
+                    break;
+            }
+        }
+
+    }
+
+    public static void addBook() {
+
+        boolean validity = false;
+
+        String tempID = "0";
+
+        while (!validity) {
+
+            System.out.print("Enter Book ID: ");
+            tempID = input.next();
+            validity = true;
+
+            for (int i = 0; books[i][0] != null; i++) {
+
+                if (books[i][0].equals(tempID)) {
+                    validity = false;
+                    System.out.println("Enter Different ID");
+                }
+
+            }
+
+        }
+
+        books[bookCount][0] = tempID;
+
+        for(int i = 0; i < 4; i++) {
+
+            System.out.print("Enter " + inputFields[i] + "\t: ");
+            books[bookCount][i+1] = input.next();
+
+        }
+
+        bookCount++;
+
+    }
+
+    public static void updateBook() {
+
+        boolean validity = false;
+        String tempID;
+        int tempLocation = 0;
+
+        while (!validity) {
+
+            System.out.print("Enter Book ID: ");
+            tempID = input.next();
+
+            for (int i = 0; books[i][0] != null; i++) {
+
+                if (books[i][0].equals(tempID)) {
+
+                    validity = true;
+                    i = tempLocation;
+
+                }
+
+            }
+
+            if (validity) {
+                for(int i = 0; i < 4; i++) {
+
+                    System.out.print("Enter " + inputFields[i] + "\t: ");
+                    books[tempLocation][i+1] = input.next();
+
+                }
+            } else {
+
+                System.out.println("Incorrect ID");
+
+            }
+        }
+
+
+    }
+
+    public static void deleteBook() {
+
+    }
+
+    public static void viewBooks() {
+
+        System.out.println("Book ID\tTitle\tAuthor\tGenre\tQuantity");
+
+        for(int i = 0; i < bookCount; i++){
+
+            System.out.println(books[i][0] + "\t" + books[i][1] + "\t" + books[i][2] + "\t" + books[i][3] + "\t\t" + books[i][4]);
+
+        }
+
+    }
+
+    public static void searchBook() {
 
     }
 
@@ -26,11 +163,11 @@ public class Main {
 
     public static int homePage() {
 
-        String[] options = {"Manage Books", "Manage Members", "Issue Books", "Return Books", "View Reports", "Exit"};
+        String[] homeOptions = {"Manage Books", "Manage Members", "Issue Books", "Return Books", "View Reports", "Exit"};
 
         for(int i = 0; i < 6; i++){
 
-            System.out.println(" " + (i+1) + ". " + options[i]);
+            System.out.println(" " + (i+1) + ". " + homeOptions[i]);
 
         }
 
@@ -66,28 +203,32 @@ public class Main {
     public static void main(String[] args) {
 
         login();
+        boolean exit = false;
 
-        int option = homePage();
+        while (!exit){
 
-        switch (option) {
-            case 1:
-                manageBooks();
-                break;
-            case 2:
-                manageMembers();
-                break;
-            case 3:
-                issueBooks();
-                break;
-            case 4:
-                returnBooks();
-                break;
-            case 5:
-                viewReports();
-                break;
-            case 6:
-                break;
+            int option = homePage();
 
+            switch (option) {
+                case 1:
+                    manageBooks();
+                    break;
+                case 2:
+                    manageMembers();
+                    break;
+                case 3:
+                    issueBooks();
+                    break;
+                case 4:
+                    returnBooks();
+                    break;
+                case 5:
+                    viewReports();
+                    break;
+                case 6:
+                    exit = true;
+                    break;
+            }
         }
     }
 
