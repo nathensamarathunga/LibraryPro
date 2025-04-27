@@ -10,7 +10,7 @@ public class Main {
 
     public static String[][] books = new String[10][5];
 
-    public static int bookCount = 0, optionSelection;
+    public static int bookCount = 0;
 
 
     //Login & Home
@@ -73,9 +73,8 @@ public class Main {
             }
 
             System.out.print("Choose Option: ");
-            optionSelection = input.nextInt();
 
-            switch (optionSelection) {
+            switch (input.nextInt()) {
 
                 case 1:
                     addBookFunction();
@@ -101,50 +100,99 @@ public class Main {
 
     }
 
+    public static boolean bookCheck() {
+
+        boolean presence = false;
+
+        return presence;
+    }
+
     public static void addBookFunction() {
 
-        String tempID;
+        String tempID = "0";
 
         boolean validity = false;
 
         while (!validity) {
 
-            System.out.println("Enter Book ID : ");
+            System.out.print("Enter Book ID : ");
             tempID = input.next();
+            validity = true;
 
             for (int i = 0; i < bookCount; i++) {
 
-                if (books[i][0].equals(tempID))
+                if (books[i][0].equals(tempID)) {
                     validity = false;
-                else {
-
-                    validity = true;
-                    bookCount++;
-                    books[bookCount-1][0] = tempID;
-
+                    System.out.println("Book ID already in use!");
+                    break;
                 }
 
             }
 
-            if (!validity)
-                System.out.println("Book ID already in use!");
+            if (validity)
+                break;
 
         }
+
+        bookCount++;
+        books[bookCount-1][0] = tempID;
 
         for (int i = 0; i < 4; i++) {
 
-            System.out.println("Enter " + bookOptions[i] + " : ");
-            books[bookCount][i] = input.next();
+            System.out.print("Enter " + bookOptions[i] + " : ");
+            books[bookCount-1][i+1] = input.next();
 
         }
+
+        System.out.println("Book Added Successfully");
 
     }
 
     public static void updateBookFunction() {
 
+        String tempID;
+
+        int tempPosition = 0;
+
+        boolean validity = false;
+
+        while (!validity) {
+
+            System.out.print("Enter Book ID : ");
+            tempID = input.next();
+
+            for (int i = 0; i < bookCount; i++) {
+
+                if (books[i][0].equals(tempID)) {
+
+                    validity = true;
+                    tempPosition = i;
+                    break;
+
+                }
+            }
+
+            if (validity)
+                break;
+
+            System.out.println("Invalid ID, Re-enter");
+
+        }
+
+        for (int i = 0; i < 4; i++) {
+
+            System.out.print("Enter " + bookOptions[i] + " : ");
+            books[tempPosition][i+1] = input.next();
+
+        }
+
+        System.out.println("Book Updated Successfully");
+
     }
 
     public static void deleteBookFunction() {
+
+
 
     }
 
@@ -153,6 +201,14 @@ public class Main {
     }
 
     public static void viewBooksFunction() {
+
+        System.out.println("Book ID\tTitle\tAuthor\tGenre\tQuantity");
+
+        for(int i = 0; i < bookCount; i++){
+
+            System.out.println(books[i][0] + "\t" + books[i][1] + "\t" + books[i][2] + "\t" + books[i][3] + "\t\t" + books[i][4]);
+
+        }
 
     }
 
