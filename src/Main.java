@@ -183,7 +183,32 @@ public class Main {
 
     public static void deleteBookFunction() {
 
+        boolean validity = false;
 
+        while (!validity) {
+
+            validity = bookCheck();
+
+            if (validity)
+                break;
+
+            System.out.println("Invalid Book ID!");
+
+        }
+
+        int x = updatePosition;
+
+        for (int i = x; i < (bookCount-1); i++) {
+
+            for (int y = 0; y < 5; y++) {
+
+                books[i][y] = books[i+1][y];
+
+            }
+
+        }
+
+        bookCount--;
 
     }
 
@@ -284,8 +309,6 @@ public class Main {
     //Main Method
 
     public static void main(String[] args) {
-
-
 
         while (!loginState) {
 
