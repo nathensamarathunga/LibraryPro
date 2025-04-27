@@ -103,11 +103,40 @@ public class Main {
 
     public static void addBookFunction() {
 
-        int tempID;
+        String tempID;
 
         boolean validity = false;
 
+        while (!validity) {
 
+            System.out.println("Enter Book ID : ");
+            tempID = input.next();
+
+            for (int i = 0; i < bookCount; i++) {
+
+                if (books[i][0].equals(tempID))
+                    validity = false;
+                else {
+
+                    validity = true;
+                    bookCount++;
+                    books[bookCount-1][0] = tempID;
+
+                }
+
+            }
+
+            if (!validity)
+                System.out.println("Book ID already in use!");
+
+        }
+
+        for (int i = 0; i < 4; i++) {
+
+            System.out.println("Enter " + bookOptions[i] + " : ");
+            books[bookCount][i] = input.next();
+
+        }
 
     }
 
