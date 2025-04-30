@@ -4,7 +4,7 @@ public class Main {
 
     public static Scanner input = new Scanner(System.in);
 
-    public static boolean loginState = false, exit = false;
+    public static boolean loginState = false, exit = false, bookAvailable = false;
 
     public static String[] bookOptions = {"Title", "Author", "Genre", "Quantity"};
 
@@ -14,7 +14,9 @@ public class Main {
 
     public static String[][] members = new String[10][4];
 
-    public static int bookCount = 0, updatePosition = 0, mainPosition = 0, memberCount = 0;
+    public static String[][] issuedBooks = new String[10][3];
+
+    public static int bookCount = 0, updatePosition = 0, mainPosition = 0, memberCount = 0, issueCount = 0;
 
     public static String tempID = "0";
 
@@ -128,7 +130,7 @@ public class Main {
 
     public static void bookInput() {
 
-        int tempQty = 0;
+        int tempQty;
 
         for (int i = 0; i < 2; i++) {
 
@@ -469,7 +471,71 @@ public class Main {
 
     //Issue Books
 
+    public static boolean bookAvailabilityCheck() {
+
+        int tempQty;
+
+        bookAvailable = false;
+
+        tempQty = Integer.parseInt(books[updatePosition][4]);
+
+        if (tempQty <= 0)
+            System.out.println("Book Not Available!");
+        else {
+
+            bookAvailable = true;
+            tempQty--;
+
+            books[updatePosition][4] = Integer.toString(tempQty);
+            issueCount++;
+
+        }
+
+        return bookAvailable;
+
+    }
+
     public static void issueBookPage() {
+
+
+        boolean validity = false;
+
+        while (!validity) {
+
+            validity = memberCheck();
+
+            if (validity)
+                break;
+
+            System.out.println("Invalid Member ID!");
+
+        }
+
+        issuedBooks[issueCount][0] = tempID;
+
+        validity = false;
+        bookAvailable = false;
+
+        while (!validity || !bookAvailable) {
+
+            validity = bookCheck();
+
+            if (validity) {
+
+                bookAvailable = bookAvailabilityCheck();
+
+            } else {
+
+                System.out.println("Invalid Book ID!");
+
+            }
+
+        }
+
+        issuedBooks[issueCount][1] = tempID;
+
+        System.out.print("Enter Due date (DD|MM|YYYY) : ");
+        issuedBooks[issueCount-1][2] = input.next();
 
     }
 
