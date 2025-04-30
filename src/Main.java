@@ -124,12 +124,30 @@ public class Main {
 
     public static void bookInput() {
 
-        for (int i = 0; i < 4; i++) {
+        int tempQty = 0;
+
+        for (int i = 0; i < 2; i++) {
 
             System.out.print("Enter " + bookOptions[i] + " : ");
             books[mainPosition][i+1] = input.next();
 
         }
+
+        do {
+
+            System.out.print("Enter " + bookOptions[3] + " : ");
+            tempQty = input.nextInt();
+
+            if (tempQty < 0) {
+
+                System.out.println("Input must be positive");
+
+            }
+
+        } while (tempQty < 0);
+
+        books[mainPosition][4] = Integer.toString(tempQty);
+
 
     }
 
