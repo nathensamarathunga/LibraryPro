@@ -544,6 +544,74 @@ public class Main {
 
     public static void returnBookPage() {
 
+        String tempBookID, tempMemberID;
+
+        int position = 0;
+
+        boolean inSystem = false;
+
+        boolean validity = false;
+
+        while (!inSystem) {
+            while (!validity) {
+
+                validity = bookCheck();
+
+                if (validity)
+                    break;
+
+                System.out.println("Invalid Book ID!");
+
+            }
+
+            tempBookID = books[updatePosition][0];
+
+            validity = false;
+
+            while (!validity) {
+
+                validity = memberCheck();
+
+                if (validity)
+                    break;
+
+                System.out.println("Invalid Member ID!");
+
+            }
+
+            tempMemberID = members[updatePosition][0];
+
+            {
+                for (int i = 0; i < issueCount; i++) {
+
+                    if (issuedBooks[i][0].equals(tempMemberID) && issuedBooks[i][1].equals(tempBookID)) {
+
+                        inSystem = true;
+                        position = i;
+                        break;
+
+                    }
+
+                }
+            }
+
+            if (!inSystem)
+                System.out.println("No Record in System");
+
+        }
+
+        for (int i = position; i < (issueCount - 1); i++) {
+
+            for (int y = 0; y < 3; y++) {
+
+                issuedBooks[i][y] = issuedBooks[i+1][y];
+
+            }
+
+        }
+
+        issueCount--;
+
     }
 
 
