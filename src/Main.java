@@ -8,9 +8,13 @@ public class Main {
 
     public static String[] bookOptions = {"Title", "Author", "Genre", "Quantity"};
 
+    public static String[] memberOptions = {"Name", "Contact", "Email"};
+
     public static String[][] books = new String[10][5];
 
-    public static int bookCount = 0, updatePosition = 0, mainPosition = 0;
+    public static String[][] members = new String[10][4];
+
+    public static int bookCount = 0, updatePosition = 0, mainPosition = 0, memberCount = 0;
 
     public static String tempID = "0";
 
@@ -148,7 +152,6 @@ public class Main {
 
         books[mainPosition][4] = Integer.toString(tempQty);
 
-
     }
 
     public static void addBookFunction() {
@@ -272,25 +275,194 @@ public class Main {
 
     public static void manageMembersPage() {
 
+        String[] memberFunctions = {"Add Member", "Update Member", "Delete Member", "Search Member", "View Member", "Exit"};
+
+        boolean exitMMP = false;
+
+        while (!exitMMP){
+
+            for (int i = 0; i < 6; i++) {
+
+                System.out.println((i + 1) + ". " + memberFunctions[i]);
+
+            }
+
+            System.out.print("Choose Option: ");
+
+            switch (input.nextInt()) {
+
+                case 1:
+                    addMemberFunction();
+                    break;
+                case 2:
+                    updateMemberFunction();
+                    break;
+                case 3:
+                    deleteMemberFunction();
+                    break;
+                case 4:
+                    searchMemberFunction();
+                    break;
+                case 5:
+                    viewMembersFunction();
+                    break;
+                case 6:
+                    exitMMP = true;
+                    break;
+
+            }
+        }
+    }
+
+
+    public static boolean memberCheck() {
+
+        boolean presence = false;
+
+        System.out.print("Enter Member ID : ");
+        tempID = input.next();
+
+        for (int i = 0; i < memberCount; i++) {
+
+            if (members[i][0].equals(tempID)) {
+
+                presence = true;
+                updatePosition = i;
+
+            }
+
+        }
+
+        return presence;
+    }
+
+    public static void memberInput() {
+
+
+        System.out.print("Enter " + memberOptions[0] + " : ");
+        members[mainPosition][1] = input.next();
+
+        System.out.print("Enter " + memberOptions[1] + " : ");
+        members[mainPosition][2] = input.next();
+
+        System.out.print("Enter " + memberOptions[2] + " : ");
+        members[mainPosition][3] = input.next();
+
+
     }
 
     public static void addMemberFunction() {
+
+        boolean validity;
+
+        do {
+
+            validity = memberCheck();
+
+            if (!validity)
+                break;
+
+            System.out.println("Member ID Already in Use!");
+
+        } while (validity);
+
+        memberCount++;
+        members[memberCount-1][0] = tempID;
+        mainPosition = memberCount-1;
+
+        memberInput();
+
+        System.out.println("Member Added Successfully");
+
 
     }
 
     public static void updateMemberFunction() {
 
+        boolean validity = false;
+
+        while (!validity) {
+
+            validity = memberCheck();
+
+            if (validity)
+                break;
+
+            System.out.println("Invalid Member ID!");
+
+        }
+
+        mainPosition = updatePosition;
+
+        memberInput();
+
+        System.out.println("Member Updated Successfully");
+
     }
 
     public static void deleteMemberFunction() {
+
+        boolean validity = false;
+
+        while (!validity) {
+
+            validity = memberCheck();
+
+            if (validity)
+                break;
+
+            System.out.println("Invalid Member ID!");
+
+        }
+
+        int x = updatePosition;
+
+        for (int i = x; i < (memberCount-1); i++) {
+
+            for (int y = 0; y < 5; y++) {
+
+                members[i][y] = members[i+1][y];
+
+            }
+
+        }
+
+        memberCount--;
 
     }
 
     public static void searchMemberFunction() {
 
+        boolean validity = false;
+
+        while (!validity) {
+
+            validity = memberCheck();
+
+            if (validity)
+                break;
+
+            System.out.println("Invalid Member ID!");
+
+        }
+
+        mainPosition = updatePosition;
+
+        System.out.println("Member ID\tName\tContact\tEmail");
+
+        System.out.println(members[mainPosition][0] + "\t" + members[mainPosition][1] + "\t" + members[mainPosition][2] + "\t" + members[mainPosition][3]);
+
     }
 
     public static void viewMembersFunction() {
+
+        System.out.println("Member ID\tName\tContact\tEmail");
+
+        for(int i = 0; i < memberCount; i++){
+
+            System.out.println(members[i][0] + "\t" + members[i][1] + "\t" + members[i][2] + "\t" + members[i][3]);
+
+        }
 
     }
 
