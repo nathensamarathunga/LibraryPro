@@ -721,7 +721,8 @@ public class Main {
 
     public static void main(String[] args) {
 
-        //Data For Testing
+/*
+//Data For Testing
 
         String[][] testingBooks = {
                 {"1001", "1001", "1001", "1001", "2"},
@@ -745,7 +746,8 @@ public class Main {
         issuedBooks = testingIssuedBooks;
         issueCount = 2;
 
-        //End of Testing Data
+//End of Testing Data
+*/
 
         while (!loginState) {
 
