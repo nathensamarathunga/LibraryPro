@@ -1,5 +1,3 @@
-<<<<<<< HEAD
-=======
 import java.util.Scanner;
 
 public class Main {
@@ -735,4 +733,3 @@ public class Main {
         }
     }
 }
->>>>>>> Version_0.2
