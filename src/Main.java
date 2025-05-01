@@ -12,13 +12,13 @@ public class Main {
 
     public static String[][] books = new String[10][5];
 
-    public static String[][] members = new String[10][4];
+    public static String[][] members = new String[10][5];
 
     public static String[][] issuedBooks = new String[10][3];
 
-    public static int bookCount = 0, updatePosition = 0, mainPosition = 0, memberCount = 0, issueCount = 0;
+    public static int bookCount = 0, updatePosition = 0, mainPosition = 0, memberCount = 0, issueCount = 0, tempBooksIssued = 0, tempBookIssuedPosition = 0;
 
-    public static String tempID = "0";
+    public static String tempID = "0", tempBookID, tempMemberID;
 
     //Login & Home
 
@@ -125,6 +125,8 @@ public class Main {
 
         }
 
+        tempBookID = books[updatePosition][0];
+
         return presence;
     }
 
@@ -132,7 +134,7 @@ public class Main {
 
         int tempQty;
 
-        for (int i = 0; i < 2; i++) {
+        for (int i = 0; i < 3; i++) {
 
             System.out.print("Enter " + bookOptions[i] + " : ");
             books[mainPosition][i+1] = input.next();
@@ -330,10 +332,13 @@ public class Main {
 
                 presence = true;
                 updatePosition = i;
+                tempBookIssuedPosition = i;
 
             }
 
         }
+
+        tempMemberID = members[updatePosition][0];
 
         return presence;
     }
@@ -349,6 +354,8 @@ public class Main {
 
         System.out.print("Enter " + memberOptions[2] + " : ");
         members[mainPosition][3] = input.next();
+
+        members[mainPosition][4] = "0";
 
 
     }
@@ -487,7 +494,6 @@ public class Main {
             tempQty--;
 
             books[updatePosition][4] = Integer.toString(tempQty);
-            issueCount++;
 
         }
 
@@ -513,6 +519,16 @@ public class Main {
 
         issuedBooks[issueCount][0] = tempID;
 
+        if (members[updatePosition][4] == null)
+            members[updatePosition][4] = "1";
+        else {
+
+            tempBooksIssued = Integer.parseInt(members[updatePosition][4]);
+            tempBooksIssued++;
+            members[updatePosition][4] = Integer.toString(tempBooksIssued);
+
+        }
+
         validity = false;
         bookAvailable = false;
 
@@ -535,7 +551,9 @@ public class Main {
         issuedBooks[issueCount][1] = tempID;
 
         System.out.print("Enter Due date (DD|MM|YYYY) : ");
-        issuedBooks[issueCount-1][2] = input.next();
+        issuedBooks[issueCount][2] = input.next();
+
+        issueCount++;
 
     }
 
@@ -544,8 +562,6 @@ public class Main {
 
     public static void returnBookPage() {
 
-        String tempBookID, tempMemberID;
-
         int position = 0;
 
         boolean inSystem = false;
@@ -553,20 +569,6 @@ public class Main {
         boolean validity = false;
 
         while (!inSystem) {
-            while (!validity) {
-
-                validity = bookCheck();
-
-                if (validity)
-                    break;
-
-                System.out.println("Invalid Book ID!");
-
-            }
-
-            tempBookID = books[updatePosition][0];
-
-            validity = false;
 
             while (!validity) {
 
@@ -579,24 +581,43 @@ public class Main {
 
             }
 
-            tempMemberID = members[updatePosition][0];
+            validity = false;
 
-            {
-                for (int i = 0; i < issueCount; i++) {
+            while (!validity) {
 
-                    if (issuedBooks[i][0].equals(tempMemberID) && issuedBooks[i][1].equals(tempBookID)) {
+                validity = bookCheck();
 
-                        inSystem = true;
-                        position = i;
-                        break;
+                if (validity)
+                    break;
 
-                    }
+                System.out.println("Invalid Book ID!");
 
-                }
             }
 
-            if (!inSystem)
-                System.out.println("No Record in System");
+            for (int i = 0; i <= (issueCount -1); i++) {
+
+                if (issuedBooks[i][0].equals(tempMemberID) && issuedBooks[i][1].equals(tempBookID)) {
+
+                    inSystem = true;
+                    position = i;
+
+                    int tempQty = Integer.parseInt(books[updatePosition][4]);
+
+                    tempQty++;
+
+                    books[updatePosition][4] = Integer.toString(tempQty);
+
+                    break;
+
+                }
+
+            }
+
+            if (!inSystem) {
+
+                System.out.println("No record found for the given Member ID and Book ID");
+                break;
+            }
 
         }
 
@@ -610,6 +631,10 @@ public class Main {
 
         }
 
+        tempBooksIssued = Integer.parseInt(members[tempBookIssuedPosition][4]);
+        tempBooksIssued--;
+        members[tempBookIssuedPosition][4] = Integer.toString(tempBooksIssued);
+
         issueCount--;
 
     }
@@ -619,13 +644,35 @@ public class Main {
 
     public static void reportsPage() {
 
+        System.out.println("1. Overdue Books");
+        System.out.println("2. Books Issued Per Member");
+        System.out.println("3. Exit");
+
+        System.out.print("Select Option:");
+        int option = input.nextInt();
+
+        switch (option) {
+
+            case 1:
+                overdueBooks();
+                break;
+            case 2:
+                booksIssuedPerMember();
+                break;
+            case 3:
+                break;
+
+        }
+
     }
 
     public static void overdueBooks() {
 
+
     }
 
     public static void booksIssuedPerMember() {
+
 
     }
 
@@ -633,6 +680,20 @@ public class Main {
     //Main Method
 
     public static void main(String[] args) {
+
+        String[][] testingBooks = {
+                {"1001", "1001", "1001", "1001", "2"},
+                {"1002", "1002", "1002", "1002", "3"}
+        };
+        books = testingBooks;
+        bookCount = 2;
+
+        String[][] testingMembers = {
+                {"001", "001", "001", "001", "0"},
+                {"002", "002", "002", "002", "0"}
+        };
+        members = testingMembers;
+        memberCount = 2;
 
         while (!loginState) {
 
