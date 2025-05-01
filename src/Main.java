@@ -1,8 +1,13 @@
+import java.time.LocalDate;
 import java.util.Scanner;
 
 public class Main {
 
     public static Scanner input = new Scanner(System.in);
+
+    public static LocalDate date = LocalDate.now();
+
+    public static LocalDate issueDate, dueDate;
 
     public static boolean loginState = false, exit = false, bookAvailable = false;
 
@@ -550,8 +555,9 @@ public class Main {
 
         issuedBooks[issueCount][1] = tempID;
 
-        System.out.print("Enter Due date (DD|MM|YYYY) : ");
+        System.out.print("Enter Due date (YYYY-MM-DD) : ");
         issuedBooks[issueCount][2] = input.next();
+
 
         issueCount++;
 
@@ -668,11 +674,45 @@ public class Main {
 
     public static void overdueBooks() {
 
+        int fineAmount = 0;
+        int dayOne = 0, dayTwo = 0;
+        double dayDifference = 0;
+        LocalDate thisDay;
+
+
+        System.out.println("Book ID\tMember ID\tDue Date\tDays Overdue\tFine Amount");
+
+        for (int i = 0; i < issueCount; i++) {
+
+            dueDate = LocalDate.parse(issuedBooks[i][2]);
+            thisDay = LocalDate.now();
+
+            dayOne = dueDate.getDayOfYear();
+            dayTwo = thisDay.getDayOfYear();
+
+            dayDifference = dayTwo - dayOne;
+
+            if (thisDay.isAfter(dueDate)) {
+
+                System.out.println(issuedBooks[i][1] + "\t" + issuedBooks[i][0] + "\t\t\t" + issuedBooks[i][2] + "\t" + dayDifference + "\t\t\t" + (dayDifference*0.5));
+            }
+        }
+
 
     }
 
     public static void booksIssuedPerMember() {
 
+        System.out.println("Member ID\tBooks Issued");
+
+        for (int i = 0; i < memberCount; i++) {
+
+            if (members[i][4].equals("0"))
+                continue;
+            else
+                System.out.println(members[i][0] + "\t\t\t" + members[i][4]);
+
+        }
 
     }
 
@@ -680,6 +720,8 @@ public class Main {
     //Main Method
 
     public static void main(String[] args) {
+
+        //Data For Testing
 
         String[][] testingBooks = {
                 {"1001", "1001", "1001", "1001", "2"},
@@ -695,11 +737,23 @@ public class Main {
         members = testingMembers;
         memberCount = 2;
 
+        String[][] testingIssuedBooks = {
+                {"001", "1001", "2025-03-03"},
+                {"002", "1002", "2025-03-03"}
+
+        };
+        issuedBooks = testingIssuedBooks;
+        issueCount = 2;
+
+        //End of Testing Data
+
         while (!loginState) {
 
             loginPage();
 
         }
+
+        System.out.println(date);
 
         while (!exit) {
 
